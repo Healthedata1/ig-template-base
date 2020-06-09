@@ -20,7 +20,7 @@
 {% if page.template == 'format' %}
   {% if page.fmt == 'xml' %}
     {% include nav-tabs.html type=page.type id=page.id active="xml" %}
-    <h3 style="counter-reset: sub-section 5;">XML Format: {{page.type}}-{{page.id}}</h3>
+    <h3 style="counter-reset: sub-section 6;">XML Format: {{page.type}}-{{page.id}}</h3>
   {% elsif page.fmt == 'json' %}
     {% include nav-tabs.html type=page.type id=page.id active="json" %}
     <h3 style="counter-reset: sub-section 7;"> JSON Format: {{page.type}}-{{page.id}}</h3>
