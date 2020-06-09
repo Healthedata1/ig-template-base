@@ -1,0 +1,22 @@
+---
+# jekyll header
+layout: fhir-artifact
+template: mappings
+type: {{[type]}}
+id: {{[id]}}
+topofpage: True
+---
+
+<!-- div style="counter-reset: section 5" class="col-12" -->
+ <!-- what does the counter reset do -->
+ <h2 id="root">
+
+{% if site.data.structuredefinitions.{{[id]}}.type == "Extension" %}
+  Extension: {{[title]}} - Mappings</h2>
+  <p>Mappings for the {{[id]}} Extension</p>
+{% else %}
+  StructureDefinition: {{[title]}} - Mappings</h2>
+  <p>Mappings for the {{id}} Profile.</p>
+{% endif %}
+
+{%include StructureDefinition-{{[id]}}-maps.xhtml%}

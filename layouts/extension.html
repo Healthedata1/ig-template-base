@@ -1,71 +1,55 @@
 ---
+# jekyll header
+layout: fhir-artifact
+template: definitions
+type: {{[type]}}
+id: {{[id]}}
+topofpage: True
 ---
-{% include fragment-pagebegin.html %}
-{% assign excludexml = site.data.info.excludexml | downcase | slice: 0 %}
-{% assign excludejson = site.data.info.excludejson | downcase | slice: 0 %}
-{% assign excludettl = site.data.info.excludettl | downcase | slice: 0 %}
-{% assign excludemaps = site.data.info.excludemap | downcase | slice: 0 %}
-<div class="col-12">
-  <!--ReleaseHeader--><p id="publish-box">Publish Box goes here</p><!--EndReleaseHeader-->
-  <ul class="nav nav-tabs">
-    <li class="active">
-      <a href="#">Content</a>
-    </li>
-    <li>
-      <a href="{{[type]}}-{{[id]}}-definitions.html">Detailed Descriptions</a>
-    </li>
-{% unless excludemaps == 'y' %}
-    <li>
-      <a href="{{[type]}}-{{[id]}}-mappings.html">Mappings</a>
-    </li>
-{% endunless %}
-    <li>
-      <a href="{{[type]}}-{{[id]}}-examples.html">Examples</a>
-    </li>
-{% unless excludexml == 'y' %}
-    <li>
-      <a href="{{[type]}}-{{[id]}}.profile.xml.html">XML</a>
-    </li>
-{% endunless %}
-{% unless excludejson == 'y' %}
-    <li>
-      <a href="{{[type]}}-{{[id]}}.profile.json.html">JSON</a>
-    </li>
-{% endunless %}
-{% unless excludettl == 'y' %}
-    <li>
-      <a href="{{[type]}}-{{[id]}}.profile.ttl.html">Turtle</a>
-    </li>
-{% endunless %}
-  </ul>
-  <a name="root"> </a>
-  <h2 id="root">StructureDefinition: {{[title]}}</h2>
+
+  <h2 id="root">Extension: {{[title]}}</h2>
   <p>{{site.data.structuredefinitions['{{[id]}}'].description | markdownify}}</p>
   <p>
-  The official URL for this profile is:
+  The official URL for this extension is:
   </p>
   <pre>{{site.data.structuredefinitions['{{[id]}}'].url}}</pre>
+  <p>Status: <b>{{site.data.structuredefinitions['{{[id]}}'].status}}</b><br/>
+    Extension maintained by: {{site.data.structuredefinitions['{{[id]}}'].publisher}}</p>
 
-  {% assign intro = site.data.pages[page.path].intro %}
-  {% if intro != null %}
-  {% if site.data.pages[page.path].intro-type == 'xml' %}
-  <div style="display:inline-block">
+  <p><b>Context of Use</b></p>
+  <p>This extension may be used on the following {{site.data.structuredefinitions['{{[id]}}'].contextType}} element(s):</p>
+  <ul>
+    {% for context in site.data.structuredefinitions['{{[id]}}'].contexts %}
+    <li>{{context.type}}</li>
+    {% endfor %}
+  </ul>
+
+  <!-- ======= included intro ===========-->
+    {% assign intro = site.data.pages[page.path].intro %}
+    {% if intro != null %}
+    {% if site.data.pages[page.path].intro-type == 'xml' %}
+    <div style="display:inline-block">
+    {% include {{intro}} %}
+    </div>
+    {% else %}
+    {% capture intro-content %}
   {% include {{intro}} %}
-  </div>
-  {% else %}
-  {% capture intro-content %}
-{% include {{intro}} %}
-  {% endcapture %}
-  <div style="display:inline-block">
-  {{ intro-content | markdownify }}
-  </div>
-  {% endif %}
-  {% endif %}
+    {% endcapture %}
+    <div style="display:inline-block">
+    {{ intro-content | markdownify }}
+    </div>
+    {% endif %}
+    {% endif %}
+  <!-- ======= end included intro ===========-->
+
+  <p><b>Usage info</b></p>
+  {%include StructureDefinition-{{[id]}}-sd-xref.xhtml%}
+
   <!-- no uri -->
   <a name="profile"> </a>
-  <h3 id="profile">Formal Views of Profile Content</h3>
+  <h3 id="profile">Formal Views of Extension Content</h3>
   <p>
-    <a href="{{site.data.fhir.path}}profiling.html#representation">Description of Profiles, Differentials, Snapshots and how the different presentations work</a>.
+    <a href="{{site.data.fhir.path}}profiling.html#representation">Description of Profiles, Differentials, Snapshots, and how the XML and JSON presentations work</a>.
   </p>
   <div id="tabs">
     <ul>
@@ -79,12 +63,12 @@
         <a href="#tabs-snap">Snapshot Table</a>
       </li>
 {% unless excludexml == 'y' %}
-<!--      <li>
+      <!--<li>
         <a href="#tabs-xml">Pseudo-XML</a>
       </li>-->
 {% endunless %}
 {% unless excludejson == 'y' %}
-<!--      <li>
+      <!--<li>
         <a href="#tabs-json">Pseudo-JSON</a>
       </li>-->
 {% endunless %}
@@ -127,7 +111,7 @@
       </div>
     </div>
 {% unless excludexml == 'y' %}
-<!--    <a name="tabs-xml"> </a>
+    <!--<a name="tabs-xml"> </a>
     <div id="tabs-xml">
       <div id="xml">
         <div id="xml-inner">
@@ -137,7 +121,7 @@
     </div>-->
 {% endunless %}
 {% unless excludejson == 'y' %}
-<!--    <a name="tabs-json"> </a>
+    <!--<a name="tabs-json"> </a>
     <div id="tabs-json">
       <div id="json">
         <div id="json-inner">
@@ -216,7 +200,7 @@
     </div>
   </div>
   <p>&#160;</p>
-  <p>Other representations of profile: <a href="{{[type]}}-{{[id]}}.sch">Schematron</a>
+  <p>Other representations of extension: <a href="{{[type]}}-{{[id]}}.sch">Schematron</a>
   </p>
   <a name="tx"> </a>
   <h3 id="tx">Terminology Bindings</h3>
@@ -226,22 +210,22 @@
   <h3 id="inv">Constraints</h3>
   {%include StructureDefinition-{{[id]}}-inv.xhtml%}
 
-  {% assign notes = site.data.pages[page.path].notes %}
-  {% if notes != null %}
-  {% if site.data.pages[page.path].notes-type == 'xml' %}
-  <div style="display:inline-block">
+  <!-- ======= included intro notes ===========-->
+    {% assign notes = site.data.pages[page.path].notes %}
+    {% if notes != null %}
+    {% if site.data.pages[page.path].notes-type == 'xml' %}
+    <div style="display:inline-block">
+    {% include {{notes}} %}
+    </div>
+    {% else %}
+    {% capture note-content %}
   {% include {{notes}} %}
-  </div>
-  {% else %}
-  {% capture note-content %}
-{% include {{notes}} %}
-  {% endcapture %}
-  <div style="display:inline-block">
-  {{ note-content | markdownify }}
-  </div>
-  {% endif %}
-  {% endif %}
+    {% endcapture %}
+    <div style="display:inline-block">
+    {{ note-content | markdownify }}
+    </div>
+    {% endif %}
+    {% endif %}
+  <!-- ======= end included notes ===========-->
 
 </div>
-{% assign includetabscripts = 'true' %}
-{% include fragment-pageend.html %}

@@ -1,0 +1,102 @@
+---
+# frontmatter
+---
+{% include fragment-pagebegin.html %}
+<!-- template for the build generated fhir artifact pages e.g., profiles, examples, etc-->
+
+<div class="col-12">
+
+<!--ReleaseHeader--><p id="publish-box">Publish Box goes here</p><!--EndReleaseHeader-->
+
+<a name="root"> </a>
+
+<!-- ============nav-tabs=============== -->
+
+<!--{% raw %}
+{{site.data.structuredefinitions.[page.id].type}}<br />
+{{page.type}} <br />
+{{page.id}}<br />
+{% endraw %}-->
+
+{% if page.template == 'format' %}
+
+  {% if page.fmt == 'xml' %}
+    {% include nav-tabs.html type=page.type id=page.id active="xml" %}
+    <h2>XML Format: {{page.type}}-{{page.id}}</h2>
+  {% elsif page.fmt == 'json' %}
+    {% include nav-tabs.html type=page.type id=page.id active="json" %}
+    <h2> JSON Format: {{page.type}}-{{page.id}}</h2>
+  {% else %}
+    {% include nav-tabs.html type=page.type id=page.id active="turtle" %}
+    <h2>Turtle Format: {{page.type}}-{{page.id}}</h2>
+  {% endif %}
+
+{% elsif page.template == 'definitions'%}
+    {% include nav-tabs.html type=page.type id=page.id active="definitions" %}
+
+{% elsif page.template == 'mappings' %}
+    {% include nav-tabs.html type=page.type id=page.id active="mappings" %}
+
+{% elsif page.template == 'examples' %}
+     {% include nav-tabs.html type=page.type id=page.id active="example" %}
+
+{% else %} <!-- content view -->
+     {% include nav-tabs.html type=page.type id=page.id active="content" %}
+
+{% endif %}
+
+<!-- ============ end nav-tabs=============== -->
+
+  <!-- ============CONTENT CONTENT=============== -->
+
+{% unless page.template == 'definitions' %}
+
+<!-- ======= included intro ===========-->
+  {% assign intro = site.data.pages[page.path].intro %}
+  {% if intro != null %}
+  {% if site.data.pages[page.path].intro-type == 'xml' %}
+  <div style="display:inline-block">
+  {% include {{intro}} %}
+  </div>
+  {% else %}
+  {% capture intro-content %}
+{% include {{intro}} %}
+  {% endcapture %}
+  <div style="display:inline-block">
+  {{ intro-content | markdownify }}
+  </div>
+  {% endif %}
+  {% endif %}
+<!-- ======= end included intro ===========-->
+
+{% endunless%}
+
+{{ content }}
+
+{% unless page.template == 'definitions' %}
+
+<!-- ======= included intro notes ===========-->
+  {% assign notes = site.data.pages[page.path].notes %}
+  {% if notes != null %}
+  {% if site.data.pages[page.path].notes-type == 'xml' %}
+  <div style="display:inline-block">
+  {% include {{notes}} %}
+  </div>
+  {% else %}
+  {% capture note-content %}
+{% include {{notes}} %}
+  {% endcapture %}
+  <div style="display:inline-block">
+  {{ note-content | markdownify }}
+  </div>
+  {% endif %}
+  {% endif %}
+<!-- ======= end included notes ===========-->
+
+{% endunless %}
+
+
+  <!-- ==============END CONTENT END CONTENT=================== -->
+
+{% include fragment-pageend.html %}
+{% assign includetabscripts = 'true' %}
