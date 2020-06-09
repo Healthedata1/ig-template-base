@@ -1,13 +1,12 @@
 ---
 # jekyll header
 layout: fhir-artifact
-template: definitions
+template: base
 type: {{[type]}}
 id: {{[id]}}
 topofpage: True
 ---
 
-  <a name="root"> </a>
   <h2 id="root">StructureDefinition: {{[title]}}</h2>
   <p>{{site.data.structuredefinitions['{{[id]}}'].description | markdownify}}</p>
   <p>
@@ -191,11 +190,9 @@ topofpage: True
   <p>Other representations of profile: <a href="{{[type]}}-{{[id]}}.sch">Schematron</a>
   </p>
   <a name="tx"> </a>
-  <h3 id="tx">Terminology Bindings</h3>
   {%include StructureDefinition-{{[id]}}-tx.xhtml%}
 
   <a name="inv"> </a>
-  <h3 id="inv">Constraints</h3>
   {%include StructureDefinition-{{[id]}}-inv.xhtml%}
 
   <!-- ======= included intro notes ===========-->

@@ -9,13 +9,13 @@ topofpage: True
 
 <!-- div style="counter-reset: section 5" class="col-12" -->
  <!-- what does the counter reset do -->
- <h2 id="root">
+ <h3 id="root" style="counter-reset: sub-section 4;">
 
 {% if site.data.structuredefinitions.{{[id]}}.type == "Extension" %}
-  Extension: {{[title]}} - Mappings</h2>
+  Extension: {{[title]}} - Mappings</h3>
   <p>Mappings for the {{[id]}} Extension</p>
 {% else %}
-  StructureDefinition: {{[title]}} - Mappings</h2>
+  StructureDefinition: {{[title]}} - Mappings</h3>
   <p>Mappings for the {{id}} Profile.</p>
 {% endif %}
 
